@@ -26,6 +26,8 @@ challenge_api = maproulette.Challenge(config)
 challenge = challenge_api.get_challenge_by_id(17667)['data']
 if challenge['status'] == 3:
     logging.info("Rebuilding challenge %d", challenge['id'])
-    # This also rebuilds the tasks
+    result = challenge_api.rebuild_challenge(challenge['id'], remove_unmatched=True)
+    logging.info("Result: %s", result)
+    time.sleep(30)
     result = challenge_api.update_challenge(challenge['id'], {'dataOriginDate': osmdump_mtime.isoformat()})
     logging.info("Result: %s", result)
