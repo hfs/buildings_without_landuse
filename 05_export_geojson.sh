@@ -9,7 +9,7 @@ psql -t -v ON_ERROR_STOP=ON > data/buildings_without_landuse.geojson <<EOF
         'features', json_agg(ST_AsGeoJSON(clusters.*)::json)
     )
     FROM (
-        SELECT
+        SELECT DISTINCT
             id,
             building_count,
             -- No idea why ForceRHR doesn't help
