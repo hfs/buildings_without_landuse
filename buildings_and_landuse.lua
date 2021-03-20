@@ -21,13 +21,19 @@ tables.administrative = osm2pgsql.define_area_table(prefix .. 'administrative', 
     { column = 'geom', type = 'geometry' },
 })
 
+function get_landuse(tags)
+    return tags.landuse or tags.amenity or tags.power or tags.man_made or
+      tags.leisure or tags.police or tags.aeroway or tags['disused:aeroway'] or
+      tags.place or tags.tourism
+end
+
 function osm2pgsql.process_way(object)
     tags = object.tags
-    -- TODO police, aeroway, disused:aeroway, place, tourism
-    if tags.landuse or tags.amenity or tags.power or tags.man_made or tags.leisure then
+    landuse = get_landuse(tags)
+    if landuse then
         row = {
             geom = { create = 'area' },
-            landuse = (tags.landuse or tags.amenity or tags.power or tags.man_made or tags.leisure)
+            landuse = landuse
         }
         tables.landuse:add_row(row)
     end
@@ -42,11 +48,11 @@ end
 
 function osm2pgsql.process_relation(object)
     tags = object.tags
-    if tags.type == 'multipolygon' and
-            (tags.landuse or tags.amenity or tags.power or tags.man_made or tags.leisure) then
+    landuse = get_landuse(tags)
+    if tags.type == 'multipolygon' and landuse then
         row = {
             geom = { create = 'area' },
-            landuse = (tags.landuse or tags.amenity or tags.power or tags.man_made or tags.leisure)
+            landuse = landuse
         }
         tables.landuse:add_row(row)
     end
