@@ -27,8 +27,8 @@ osmfilter "$inputfile" \
     --keep-relations="aeroway" \
     --keep-ways="disused:aeroway" \
     --keep-relations="disused:aeroway" \
-    --keep-ways="place" \
-    --keep-relations="place" \
+    --keep-ways="place=square" \
+    --keep-relations="place=square" \
     --keep-ways="tourism" \
     --keep-relations="tourism" \
     --keep="type=boundary boundary=administrative" \
