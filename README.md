@@ -1,12 +1,13 @@
-# [Maproulette: Buildings without landuse](https://maproulette.org/browse/challenge/17667/)
+# [Maproulette: Buildings without landuse](https://maproulette.org/browse/challenges/17667/)
 
 OpenStreetMap maps land use, the primary use of a land area by humans. Typical
 uses are residential, commercial, industrial, and so on. See the
 [OpenStreetMap wiki on land use](https://wiki.openstreetmap.org/wiki/Key:landuse)
 for details.
 
-This project looks at buildings in Germany which are not surrounded by an appropriate land use area. Groups of buildings are fed as mapping tasks
-into [Maproulette](https://maproulette.org/browse/challenge/17667/), a
+This project looks at buildings in Germany which are not surrounded by an
+appropriate land use area. Groups of buildings are fed as mapping tasks
+into [Maproulette](https://maproulette.org/browse/challenges/17667/), a
 micro-tasking platform for OpenStreetMap contributors, where they can improve
 the map by adding the land use areas and other details, one task at a time.
 
