@@ -1,4 +1,4 @@
-# [Maproulette: Buildings without landuse](https://maproulette.org/browse/challenges/17667/)
+# [MapRoulette: Buildings without landuse](https://maproulette.org/browse/challenges/17667/)
 
 OpenStreetMap maps land use, the primary use of a land area by humans. Typical
 uses are residential, commercial, industrial, and so on. See the
@@ -6,8 +6,10 @@ uses are residential, commercial, industrial, and so on. See the
 for details.
 
 This project looks at buildings in Germany which are not surrounded by an
-appropriate land use area. Groups of buildings are fed as mapping tasks
-into [Maproulette](https://maproulette.org/browse/challenges/17667/), a
+appropriate land use area. If there are e.g. many residential buildings in an
+area, one would expect that there’s a residential land use polygon surrounding
+them. Groups of such buildings are fed as mapping tasks into
+[MapRoulette](https://maproulette.org/browse/challenges/17667/), a
 micro-tasking platform for OpenStreetMap contributors, where they can improve
 the map by adding the land use areas and other details, one task at a time.
 
@@ -42,22 +44,50 @@ on. The filter is defined in
 
 ### [04_analyze.sh](04_analyze.sh) – Intersect the data sets
 
-Now intersect the data sets and remove and buildings which are contained in or touch any land use area. Only the buildings without any surrounding land use remain. Create clusters of these buildings by proximity. Only use clusters with a minimum of buildings to make sure that only the most urgent cases are worked on. Each cluster becomes one task in MapRoulette.
+Now intersect the data sets and remove and buildings which are contained in or
+touch any land use area. Only the buildings without any surrounding land use
+remain. Create clusters of these buildings by proximity. Only use clusters with
+a minimum of buildings to make sure that only the most urgent cases are worked
+on. Each cluster becomes one task in MapRoulette.
+
+The data looks like this:
+
+![Map of land use areas and buildings](doc/buildings_without_landuse.jpg)
+
+The blue areas are land use areas. Red are buildings. Pink on white background
+are buildings which are not surrounded by a land use area. These are the
+buildings to be identified for the tasks.
+
+The buildings are then clustered by proximity with a minimum number of
+buildings per cluster. The convex hull of all buildings in the cluster then
+becomes the polygon for the task.
+
+![Map of building clusters](doc/building_clusters.jpg)
+
+The hatched green areas are the polygons for each task. Pink are buildings
+without land use. The polygons are only meant as hint to the mapper where to
+look, not as proposed land use polygon. Note that not all buildings are covered
+if their cluster contains too few buildings.
 
 ### [05_export_geojson.sh](05_export_geojson.sh) – GeoJSON export
 
-Export each cluster’s convex hull as polygon geometry in GeoJSON format that can be uploaded
-to Maproulette.
+Export the clusters’ convex hull as polygon geometry in GeoJSON format that can
+be uploaded to MapRoulette.
+
+Only the 1000 biggest tasks (by number of contained buildings) are exported, to
+get a manageable challenge. These should be the most important cases.
+
+![Example task in MapRoulette](doc/maproulette_task.jpg)
 
 ### [06_upload_results.sh](06_upload_results.sh) – Upload output
 
 This is a convenience script for myself to upload updated versions of the
-output files as GitHub gist, from where they will be pulled by Maproulette. The
+output files as GitHub gist, from where they will be pulled by MapRoulette. The
 data should be refreshed every few weeks, to account for changes done by other
-mappers outside of Maproulette. If the data gets stale, it becomes frustrating
-for Maproulette users to get assigned tasks where nothing is left to do.
+mappers outside of MapRoulette. If the data gets stale, it becomes frustrating
+for MapRoulette users to get assigned tasks where nothing is left to do.
 
-### [07_maproulette_refresh.py](07_maproulette_refresh.py) – Update Maproulette challenge
+### [07_maproulette_refresh.py](07_maproulette_refresh.py) – Update MapRoulette challenge
 
 Refresh the challenge after the data has been updated.
 
